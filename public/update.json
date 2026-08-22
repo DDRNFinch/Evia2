@@ -1,17 +1,17 @@
 {
-  "version": "105",
-  "title": "Evidence source ticks and folder completion",
+  "version": "108",
+  "title": "A more alive Evia",
   "details": [
-    "Yellow ticks now mean learner evidence, purple ticks mean recognised prior learning, and blue ticks mean assessor observation from Milos",
-    "Job and category folders only receive a yellow tick when every evidence area underneath is covered",
-    "Learner evidence, RPL and Milos observation all contribute to course coverage and folder completion",
-    "Mixed evidence sources can complete a folder; the completed folder itself always shows one yellow tick"
+    "Evia now has subtle idle movement, natural eye glances, blinking and occasional head tilts",
+    "Evia reacts when you tap her and gives a small happy expression after successful evidence actions",
+    "Future app updates now appear as a clear notification on the Evia home screen with a direct Update Evia action",
+    "The home update notification stays out of the way while menus and QR screens are open"
   ],
-  "summary": "Evidence colours now show where coverage came from, while folder ticks only appear when everything inside is covered.",
+  "summary": "Evia feels more alive and new versions are now surfaced directly on the home screen.",
   "changes": [
-    "Removed partial folder ticks caused by evidence counts",
-    "Added purple RPL tick badges and blue Milos observation tick badges",
-    "Combined learner, RPL and Milos coverage for KSB/AC progress",
-    "Refreshed the installed-app cache to v105"
+    "Added low-key avatar life animations and reactions",
+    "Added a home-screen new-version notification",
+    "Kept reduced-motion support for accessibility",
+    "Refreshed the complete offline shell to v108"
   ]
 }
