@@ -1,5 +1,5 @@
-// Evia v105 uses compositor-only smooth motion and keeps one clean production shell.
-const CACHE_NAME = 'evia-shell-v105';
+// Evia v106 refines evidence-source markers and fixed KSB marker positions.
+const CACHE_NAME = 'evia-shell-v106';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
