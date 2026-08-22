@@ -1,18 +1,19 @@
 {
-  "version": "106",
-  "title": "Cleaner evidence source ticks",
+  "version": "107",
+  "title": "Unified QR exchange and evidence key",
   "details": [
-    "Evidence areas now show at most one purple RPL tick and one blue Milos tick",
-    "A purple tick only appears when every KSB attached to that evidence area is covered by RPL",
-    "A blue tick only appears when every KSB attached to that evidence area is covered by Milos observation",
-    "Each KSB in Course coverage now has fixed positions for learner, RPL and Milos evidence markers"
+    "Course coverage now shows only a compact four-colour evidence key with no explanatory paragraph",
+    "Yellow means Learner evidence, purple means Recorded Prior Learning, blue means Assessor Observation and orange means Witness testimony",
+    "Witness testimony is now a full evidence source and contributes to KSB coverage and folder completion",
+    "The assistant launcher now opens only Share QR code and Receive QR code instead of separate Milos, Symi and Tinos pop-ups",
+    "Milos, Symi and Tinos receive the same anonymous Evia course/progress QR while their return QR information can differ by purpose"
   ],
-  "summary": "Evidence source markers are now single, consistent and aligned under each KSB.",
+  "summary": "Evia now has one simple QR exchange and four clearly keyed evidence sources.",
   "changes": [
-    "Removed repeated purple and blue ticks from evidence-area rows",
-    "Changed RPL and Milos area markers to all-KSB completion rules",
-    "Added a fixed three-position marker row beneath every KSB",
-    "Kept yellow folder completion dependent on every area underneath being completed",
-    "Refreshed the installed-app cache to v106"
+    "Added the four-colour Course coverage key",
+    "Added orange Witness testimony ticks and coverage handling",
+    "Prepared Tinos witness-testimony return QR handling",
+    "Replaced assistant-specific pop-ups with Share QR code and Receive QR code",
+    "Refreshed the installed-app cache to v107"
   ]
 }
