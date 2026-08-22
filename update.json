@@ -1,17 +1,20 @@
 {
-  "version": "112",
-  "title": "Stable targets and course coverage",
+  "version": "113",
+  "title": "A more alive Evia and one learner profile",
   "details": [
-    "The old large Target tile has been removed from the Evidence hub logic",
-    "The compact bullseye Target shortcut remains in the top-right and still opens the Target board",
-    "KSB progress now uses learner evidence, Recorded Prior Learning, Assessor Observation and Witness testimony together",
-    "The KSB percentage no longer changes when Course coverage is opened or closed"
+    "Evia now looks around evenly instead of favouring the lower-left of the screen",
+    "Her idle animation now includes a soft pulse, rolling glow, tiny hops, pop and dim reactions, and small rolls",
+    "After 10 seconds without interaction Evia gently falls asleep and wakes with a small brighten and pop on the next touch",
+    "The learner name on the home screen is now the single profile editor for name, course, dates, working pattern and online portfolio address",
+    "The duplicate Edit course details route has been removed after setup"
   ],
-  "summary": "Targets stay compact and KSB progress now uses one consistent evidence calculation.",
+  "summary": "Evia feels more alive while learner details now have one clear home.",
   "changes": [
-    "Removed the legacy Target-card takeover",
-    "Stabilised combined KSB coverage",
-    "Kept Course coverage and the KSB arch in sync",
-    "Refreshed the offline shell to v112"
+    "Balanced Evia's eye movement",
+    "Added pulse, rolling glow, hop, pop, dim and sleep/wake animations",
+    "Unified learner profile under the home learner name",
+    "Added working hours and working days to learner profile",
+    "Removed the duplicate course-details editor",
+    "Refreshed the offline shell to v113"
   ]
 }
