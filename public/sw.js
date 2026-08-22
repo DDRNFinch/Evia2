@@ -1,5 +1,5 @@
-// Evia v102 uses compositor-only smooth motion and keeps one clean production shell.
-const CACHE_NAME = 'evia-shell-v102';
+// Evia v103 uses compositor-only smooth motion and keeps one clean production shell.
+const CACHE_NAME = 'evia-shell-v103';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -13,12 +13,13 @@ const CRITICAL = [
   './assets/evia-selfobs-fixes.css',
   './assets/evia-selfobs-live.js',
   './assets/evia-updater.js',
-  './assets/evia-version-v102.js',
+  './assets/evia-version-v103.js',
   './assets/evia-mini-milos-v86.js',
   './assets/evia-next-visit-v95.js',
   './assets/evia-milos-review-sync-v97.js',
   './assets/evia-targets.js',
   './assets/evia-count-display-v94.js',
+  './assets/evia-evidence-ticks-v103.js',
   './assets/evia-milos-observed-arch-v94.js',
   './assets/evia-arp-v80.js',
   './assets/evia-arp-home-score-v94.js',
