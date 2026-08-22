@@ -1,19 +1,17 @@
 {
-  "version": "109",
-  "title": "A simpler evidence upload flow",
+  "version": "110",
+  "title": "A cleaner home header",
   "details": [
-    "The top-right Evidence shortcut has been replaced by the learner's current Target",
-    "The centre QR menu now includes Upload evidence beneath Share QR code and Receive QR code",
-    "Upload evidence opens a guided Evidence hub with Evidence packs and Upload evidence",
-    "Learners can save their online portfolio link in Learner details and Evia uses it when Upload evidence is selected",
-    "Evidence packs still open the same existing evidence area and download workflow"
+    "The large Target card has been removed and the compact bullseye Target control is back in the top-right",
+    "The Target control still opens the same full target board as before",
+    "The course identity on the left is now reduced to two short lines: course name and course code",
+    "Bricklayer shows Bricklayer / ST0095, Trowel shows Trowel / 6570-05, and Carpentry or Joinery show their course name / ST0264"
   ],
-  "summary": "Targets now sit on the home screen and evidence upload has one clear guided route.",
+  "summary": "The home header is smaller and clearer, with the original compact target control restored.",
   "changes": [
-    "Moved Targets into the top-right home position",
-    "Added Upload evidence to the centre exchange menu",
-    "Added the guided Evidence hub",
-    "Added an online portfolio link to Learner details",
-    "Refreshed the complete offline shell to v109"
+    "Restored the compact bullseye Target shortcut",
+    "Removed the large Target card",
+    "Simplified the course title to two small lines",
+    "Refreshed the offline shell to v110"
   ]
 }
