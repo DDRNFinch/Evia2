@@ -1,4 +1,4 @@
-// Evia v114 polishes home branding and removes avatar sleep mode.
+// Evia v114 navigation pill refresh.
 const CACHE_NAME = 'evia-shell-v114';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
