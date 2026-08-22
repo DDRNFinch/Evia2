@@ -9,7 +9,7 @@ let DATA=[],entries=read(STORE,[]),dayIds=read(DAY,[]),recap=read(RECAP,null),op
 const $=q=>document.querySelector(q),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function read(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}}
 function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
-function dots(n){n=Math.max(0,Math.round(Number(n)||0));if(!n)return"";return n>5?`o x ${n}`:"o".repeat(n)}
+function dots(n){n=Math.max(0,Math.round(Number(n)||0));return n?"✓":""}
 function fresh(){return entries.filter(e=>!e.downloadedAt)}
 function archived(){return entries.filter(e=>e.downloadedAt)}
 function today(){return entries.filter(e=>dayIds.includes(e.id))}
@@ -89,7 +89,7 @@ function evidence(p){
   Object.keys(groups).sort().forEach(g=>{h+=`<div class="self-card group"><strong>${esc(g)} <em>${dots(groups[g].length)}</em></strong>`;groups[g].forEach(e=>h+=`<div class="self-entry"><b>${esc(e.title)} · ${esc(e.jobTitle)}</b><span>${esc(e.answerText||"Voice answer")}</span><small>${(e.codes||[]).join(" · ")} · ${new Date(e.createdAt).toLocaleDateString("en-GB")}</small></div>`);h+="</div>"});
   if(!list.length)h+='<div class="self-card"><span>Nothing here yet.</span></div>';p.innerHTML=h
 }
-function coverage(p){const x=counts();p.innerHTML=back()+title("Course coverage","Nothing is marked complete. Yellow marks only show how many times you have evidenced each KSB. Tap any code to get a suitable photo or question.")+`<div class="self-ksbs">${CODES.map(c=>`<button data-code="${c}"><b>${c}</b><span>${dots(x[c]||0)}</span></button>`).join("")}</div>`}
+function coverage(p){const x=counts();p.innerHTML=back()+title("Course coverage","Nothing is marked complete. A yellow tick shows that you have evidence against that KSB. Tap any code to get a suitable photo or question.")+`<div class="self-ksbs">${CODES.map(c=>`<button data-code="${c}"><b>${c}</b><span>${dots(x[c]||0)}</span></button>`).join("")}</div>`}
 function day(p){p.innerHTML=title("That’s enough for today",recap?.count?`You collected ${recap.count} evidence moment${recap.count===1?"":"s"}. I’ll remind you next time.`:"Nothing was forced or marked missing.")+`<button class="self-button primary" data-action="home">Back home</button>`}
 function bindPanel(){
   document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{cat=findCat(b.dataset.cat);view="jobs";render()});
