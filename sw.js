@@ -1,5 +1,5 @@
-// Evia v113 adds richer avatar life and one unified learner profile.
-const CACHE_NAME = 'evia-shell-v113';
+// Evia v114 polishes home branding and removes avatar sleep mode.
+const CACHE_NAME = 'evia-shell-v114';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -15,9 +15,10 @@ const CRITICAL = [
   './assets/evia-avatar-life-v108.js',
   './assets/evia-evidence-hub-v109.js',
   './assets/evia-home-header-v110.js',
+  './assets/evia-home-brand-v114.js',
   './assets/evia-updater.js',
   './assets/evia-updater.css',
-  './assets/evia-version-v113.js',
+  './assets/evia-version-v114.js',
   './assets/evia-mini-milos-v86.js',
   './assets/evia-qr-exchange-v107.js',
   './assets/evia-assistant-network.js',
