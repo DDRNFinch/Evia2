@@ -1,5 +1,5 @@
-// Evia v108 adds a livelier avatar and home-screen update notification.
-const CACHE_NAME = 'evia-shell-v108';
+// Evia v109 moves evidence upload into one guided hub and places Targets on the home screen.
+const CACHE_NAME = 'evia-shell-v109';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -13,6 +13,7 @@ const CRITICAL = [
   './assets/evia-selfobs-fixes.css',
   './assets/evia-selfobs-live.js',
   './assets/evia-avatar-life-v108.js',
+  './assets/evia-evidence-hub-v109.js',
   './assets/evia-updater.js',
   './assets/evia-updater.css',
   './assets/evia-version-v105.js',
@@ -78,7 +79,7 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.endsWith('/sw.js') || url.pathname.endsWith('/update.json')) {
+  if (url.pathname.endsWith('/sw.js') || url.pathname.endsWith('/update.json') || (url.pathname.endsWith('/index.html') && url.searchParams.has('version-check'))) {
     event.respondWith(fetch(request, { cache: 'no-store' }));
     return;
   }
