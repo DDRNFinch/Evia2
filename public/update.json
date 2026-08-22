@@ -1,16 +1,17 @@
 {
-  "version": "104",
-  "title": "Evidence tick marker fixed",
+  "version": "105",
+  "title": "Evidence source ticks and folder completion",
   "details": [
-    "Yellow evidence markers now use a filled yellow circle with a dark tick instead of the letter o",
-    "Evidence status is immediately recognisable and no longer looks like a zero",
-    "The same evidence tick is used consistently in KSB and NVQ AC coverage views",
-    "Installed copies receive a fresh v104 cache so the corrected native marker is loaded"
+    "Yellow ticks now mean learner evidence, purple ticks mean recognised prior learning, and blue ticks mean assessor observation from Milos",
+    "Job and category folders only receive a yellow tick when every evidence area underneath is covered",
+    "Learner evidence, RPL and Milos observation all contribute to course coverage and folder completion",
+    "Mixed evidence sources can complete a folder; the completed folder itself always shows one yellow tick"
   ],
-  "summary": "Evidence status now renders as a clear yellow tick directly from Evia instead of the old o/zero-style marker.",
+  "summary": "Evidence colours now show where coverage came from, while folder ticks only appear when everything inside is covered.",
   "changes": [
-    "Replaced the legacy o and o x count marker at its source with one clear yellow tick when evidence exists",
-    "Applied the same evidence tick to KSB and NVQ evidence coverage while keeping RPL and Milos observation markers unchanged",
-    "Refreshed the installed-app cache so v104 loads the corrected native evidence marker instead of the cached o marker"
+    "Removed partial folder ticks caused by evidence counts",
+    "Added purple RPL tick badges and blue Milos observation tick badges",
+    "Combined learner, RPL and Milos coverage for KSB/AC progress",
+    "Refreshed the installed-app cache to v105"
   ]
 }
