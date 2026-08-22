@@ -1,17 +1,18 @@
 {
-  "version": "105",
-  "title": "Evidence source ticks and folder completion",
+  "version": "106",
+  "title": "Cleaner evidence source ticks",
   "details": [
-    "Yellow ticks now mean learner evidence, purple ticks mean recognised prior learning, and blue ticks mean assessor observation from Milos",
-    "Job and category folders only receive a yellow tick when every evidence area underneath is covered",
-    "Learner evidence, RPL and Milos observation all contribute to course coverage and folder completion",
-    "Mixed evidence sources can complete a folder; the completed folder itself always shows one yellow tick"
+    "Evidence areas now show at most one purple RPL tick and one blue Milos tick",
+    "A purple tick only appears when every KSB attached to that evidence area is covered by RPL",
+    "A blue tick only appears when every KSB attached to that evidence area is covered by Milos observation",
+    "Each KSB in Course coverage now has fixed positions for learner, RPL and Milos evidence markers"
   ],
-  "summary": "Evidence colours now show where coverage came from, while folder ticks only appear when everything inside is covered.",
+  "summary": "Evidence source markers are now single, consistent and aligned under each KSB.",
   "changes": [
-    "Removed partial folder ticks caused by evidence counts",
-    "Added purple RPL tick badges and blue Milos observation tick badges",
-    "Combined learner, RPL and Milos coverage for KSB/AC progress",
-    "Refreshed the installed-app cache to v105"
+    "Removed repeated purple and blue ticks from evidence-area rows",
+    "Changed RPL and Milos area markers to all-KSB completion rules",
+    "Added a fixed three-position marker row beneath every KSB",
+    "Kept yellow folder completion dependent on every area underneath being completed",
+    "Refreshed the installed-app cache to v106"
   ]
 }
