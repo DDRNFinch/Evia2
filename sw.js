@@ -1,5 +1,5 @@
-// Evia v107 adds the unified QR exchange, coverage key and witness evidence.
-const CACHE_NAME = 'evia-shell-v107';
+// Evia v108 adds a livelier avatar and home-screen update notification.
+const CACHE_NAME = 'evia-shell-v108';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -12,7 +12,9 @@ const CRITICAL = [
   './assets/evia-selfobs-live.css',
   './assets/evia-selfobs-fixes.css',
   './assets/evia-selfobs-live.js',
+  './assets/evia-avatar-life-v108.js',
   './assets/evia-updater.js',
+  './assets/evia-updater.css',
   './assets/evia-version-v105.js',
   './assets/evia-mini-milos-v86.js',
   './assets/evia-qr-exchange-v107.js',
