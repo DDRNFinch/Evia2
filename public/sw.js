@@ -1,5 +1,5 @@
-// Evia v104 uses compositor-only smooth motion and keeps one clean production shell.
-const CACHE_NAME = 'evia-shell-v104';
+// Evia v105 uses compositor-only smooth motion and keeps one clean production shell.
+const CACHE_NAME = 'evia-shell-v105';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -13,17 +13,21 @@ const CRITICAL = [
   './assets/evia-selfobs-fixes.css',
   './assets/evia-selfobs-live.js',
   './assets/evia-updater.js',
-  './assets/evia-version-v104.js',
+  './assets/evia-version-v105.js',
   './assets/evia-mini-milos-v86.js',
   './assets/evia-next-visit-v95.js',
   './assets/evia-milos-review-sync-v97.js',
   './assets/evia-targets.js',
   './assets/evia-count-display-v94.js',
   './assets/evia-milos-observed-arch-v94.js',
+  './assets/evia-rpl-evidence.js',
+  './assets/evia-rpl-evidence.css',
+  './assets/evia-rpl-course.js',
+  './assets/evia-rpl-course.css',
+  './assets/evia-evidence-ticks-v103.js',
   './assets/evia-arp-v80.js',
   './assets/evia-arp-home-score-v94.js',
   './assets/evia-rpl-unit-order-v88.js',
-  './assets/evia-rpl-course.css',
   './assets/evia-trowel-handbook-v89.js',
   './assets/evia-trowel-loader.js',
   './assets/evia-6570-pack-migration.js',
