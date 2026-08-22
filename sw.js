@@ -1,5 +1,5 @@
-// Evia v110 profile hotfix: clickable learner name and portfolio website editing.
-const CACHE_NAME = 'evia-shell-v110';
+// Evia v112 removes the legacy Target tile and stabilises combined KSB coverage.
+const CACHE_NAME = 'evia-shell-v112';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -17,7 +17,7 @@ const CRITICAL = [
   './assets/evia-home-header-v110.js',
   './assets/evia-updater.js',
   './assets/evia-updater.css',
-  './assets/evia-version-v110.js',
+  './assets/evia-version-v112.js',
   './assets/evia-mini-milos-v86.js',
   './assets/evia-qr-exchange-v107.js',
   './assets/evia-assistant-network.js',
