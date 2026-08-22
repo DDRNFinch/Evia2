@@ -1,17 +1,19 @@
 {
-  "version": "108",
-  "title": "A more alive Evia",
+  "version": "109",
+  "title": "A simpler evidence upload flow",
   "details": [
-    "Evia now has subtle idle movement, natural eye glances, blinking and occasional head tilts",
-    "Evia reacts when you tap her and gives a small happy expression after successful evidence actions",
-    "Future app updates now appear as a clear notification on the Evia home screen with a direct Update Evia action",
-    "The home update notification stays out of the way while menus and QR screens are open"
+    "The top-right Evidence shortcut has been replaced by the learner's current Target",
+    "The centre QR menu now includes Upload evidence beneath Share QR code and Receive QR code",
+    "Upload evidence opens a guided Evidence hub with Evidence packs and Upload evidence",
+    "Learners can save their online portfolio link in Learner details and Evia uses it when Upload evidence is selected",
+    "Evidence packs still open the same existing evidence area and download workflow"
   ],
-  "summary": "Evia feels more alive and new versions are now surfaced directly on the home screen.",
+  "summary": "Targets now sit on the home screen and evidence upload has one clear guided route.",
   "changes": [
-    "Added low-key avatar life animations and reactions",
-    "Added a home-screen new-version notification",
-    "Kept reduced-motion support for accessibility",
-    "Refreshed the complete offline shell to v108"
+    "Moved Targets into the top-right home position",
+    "Added Upload evidence to the centre exchange menu",
+    "Added the guided Evidence hub",
+    "Added an online portfolio link to Learner details",
+    "Refreshed the complete offline shell to v109"
   ]
 }
