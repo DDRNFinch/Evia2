@@ -1,5 +1,5 @@
-// Evia v109 moves evidence upload into one guided hub and places Targets on the home screen.
-const CACHE_NAME = 'evia-shell-v109';
+// Evia v110 restores the compact Targets control and simplifies the course identity header.
+const CACHE_NAME = 'evia-shell-v110';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -14,9 +14,10 @@ const CRITICAL = [
   './assets/evia-selfobs-live.js',
   './assets/evia-avatar-life-v108.js',
   './assets/evia-evidence-hub-v109.js',
+  './assets/evia-home-header-v110.js',
   './assets/evia-updater.js',
   './assets/evia-updater.css',
-  './assets/evia-version-v105.js',
+  './assets/evia-version-v110.js',
   './assets/evia-mini-milos-v86.js',
   './assets/evia-qr-exchange-v107.js',
   './assets/evia-assistant-network.js',
