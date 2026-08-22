@@ -1,0 +1,16 @@
+(()=>{
+"use strict";
+const VERSION=114,STYLE_ID="evia-home-brand-v114-style";
+let observer=null,queued=false;
+function ensureStyle(){if(document.getElementById(STYLE_ID))return;const s=document.createElement("style");s.id=STYLE_ID;s.textContent=`
+.selfobs .self-top>b.evia-brand-v114{display:block!important;margin:0!important;font:680 1.02rem/1.02 -apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable","Segoe UI",sans-serif!important;letter-spacing:-.025em!important;color:#242428!important}.selfobs .self-top>b.evia-brand-v114 .evia-brand-i-v114{color:#efc33d!important}
+.selfobs .evia-learner-name-v113,.selfobs .evia-learner-name-v114{display:inline-flex!important;align-items:center!important;gap:.28rem!important;width:max-content!important;max-width:9.7rem!important;margin:.2rem 0 0!important;padding:.24rem .5rem .26rem!important;border:1px solid rgba(239,195,61,.38)!important;border-radius:999px!important;background:rgba(255,248,220,.78)!important;color:#6d6040!important;font:620 .51rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable","Segoe UI",sans-serif!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;box-shadow:0 2px 7px rgba(139,109,20,.07),inset 0 1px rgba(255,255,255,.8)!important;cursor:pointer!important;transition:transform .15s ease,background .15s ease,border-color .15s ease,opacity .15s ease!important}
+.selfobs .evia-learner-name-v113::after,.selfobs .evia-learner-name-v114::after{content:"›";flex:0 0 auto;color:#b4952e;font-size:.72rem;line-height:.7;transform:translateY(-.01rem)}
+.selfobs .evia-learner-name-v113:active,.selfobs .evia-learner-name-v114:active{transform:scale(.97)!important;background:rgba(250,236,179,.9)!important;opacity:.8!important}
+@media(prefers-reduced-motion:reduce){.selfobs .evia-learner-name-v113,.selfobs .evia-learner-name-v114{transition:none!important}}
+`;document.head.appendChild(s)}
+function patch(){queued=false;ensureStyle();const title=document.querySelector(".evia-app.selfobs .self-top>b");if(title&&!title.classList.contains("evia-brand-v114")){title.classList.add("evia-brand-v114");title.innerHTML='Ev<span class="evia-brand-i-v114">i</span>a'}const profile=document.querySelector(".evia-app.selfobs .evia-learner-name-v113,.evia-app.selfobs .evia-learner-name-v114");if(profile)profile.setAttribute("title","Open learner profile")}
+function queue(){if(queued)return;queued=true;requestAnimationFrame(patch)}
+function start(){patch();const root=document.getElementById("root")||document.body;if(!observer){observer=new MutationObserver(queue);observer.observe(root,{subtree:true,childList:true})}window.addEventListener("pageshow",queue);window.addEventListener("focus",queue)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start();window.EviaHomeBrand=Object.freeze({version:VERSION,refresh:queue});
+})();
