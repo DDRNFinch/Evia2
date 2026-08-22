@@ -1,49 +1,61 @@
 (()=>{
 "use strict";
-const STORE="evia-selfobs-live-v3";let queued=false;
-function readEntries(){try{const x=JSON.parse(localStorage.getItem(STORE)||"[]");return Array.isArray(x)?x:[]}catch{return[]}}
-function mark(n){n=Math.max(0,Math.round(Number(n)||0));return n?"✓":""}
-function setText(el,n){if(!el)return;const text=mark(n);if(el.textContent!==text)el.textContent=text;el.classList.toggle("evia-evidence-check",!!n);if(n){el.setAttribute("title","Evidence recorded");el.setAttribute("aria-label",`${n} evidence item${n===1?"":"s"} recorded`)}else{el.removeAttribute("title");el.removeAttribute("aria-label")}}
-function count(entries,field,id){return entries.reduce((n,e)=>n+(e?.[field]===id?1:0),0)}
-function patch(){
-  queued=false;const entries=readEntries();
-  document.querySelectorAll("button[data-cat]").forEach(b=>setText(b.querySelector(".self-side b"),count(entries,"categoryId",b.dataset.cat)));
-  document.querySelectorAll("button[data-job]").forEach(b=>setText(b.querySelector(".self-side b"),count(entries,"jobId",b.dataset.job)));
-  document.querySelectorAll("button[data-opp]").forEach(b=>setText(b.querySelector(".self-side b"),count(entries,"opportunityId",b.dataset.opp)));
-  document.querySelectorAll(".self-ksbs button[data-code]").forEach(b=>{const code=b.dataset.code,n=entries.reduce((total,e)=>total+(Array.isArray(e?.codes)&&e.codes.includes(code)?1:0),0),span=Array.from(b.children).find(x=>x.tagName==="SPAN"&&!x.classList.contains("evia-rpl-o"));setText(span,n)});
-  document.querySelectorAll(".self-card.group").forEach(card=>setText(card.querySelector("strong em"),card.querySelectorAll(".self-entry").length))
+const VERSION=105,STORE="evia-selfobs-live-v3",RPL_KEY="evia-rpl-ksbs-v1",OBS_KEY="evia-mini-milos-observed-v1";
+let DATA=[],dataKey="",dataPromise=null,queued=false;
+function read(k,d){try{const x=JSON.parse(localStorage.getItem(k)||"null");return x??d}catch{return d}}
+function ctx(){return window.EviaCourseContext?.current?.()||null}
+function routeId(c=ctx()){
+  if(!c||c.noCourse)return"";
+  if(c.courseId==="st0095-v1-2")return"ST0095";
+  if(c.courseId==="st0264-v1-4")return c.pathway==="architectural-joiner"?"ST0264-AJ":"ST0264-SITE";
+  if(c.courseId==="6570-05"){const p=String(c.pathway||"thin").toUpperCase();return({THIN:"6570-05-THIN",REPAIR:"6570-05-REPAIR",SPECIALIST:"6570-05-SPECIALIST",DRAINAGE:"6570-05-DRAINAGE"})[p]||"6570-05-THIN"}
+  return""
 }
-function queue(){if(queued)return;queued=true;requestAnimationFrame(patch)}
-const COUNT_SELECTOR="button[data-cat],button[data-job],button[data-opp],.self-ksbs button[data-code],.self-card.group,.self-entry";
-function relevant(records){return records.some(record=>[...record.addedNodes].some(node=>node.nodeType===1&&(node.matches?.(COUNT_SELECTOR)||node.querySelector?.(COUNT_SELECTOR))))}
-function start(){
-  patch();const root=document.getElementById("root")||document.body;if(root&&!root.__eviaCountV94Observer){root.__eviaCountV94Observer=true;new MutationObserver(records=>{if(relevant(records))queue()}).observe(root,{subtree:true,childList:true})}
+function entries(){const x=read(STORE,[]);return Array.isArray(x)?x:[]}
+function learnerOppSet(xs=entries()){return new Set(xs.map(e=>e?.opportunityId).filter(Boolean))}
+function learnerCodeSet(xs=entries()){const out=new Set();xs.forEach(e=>(Array.isArray(e?.codes)?e.codes:[]).forEach(c=>out.add(String(c).toUpperCase())));return out}
+function rplSet(){const allowed=new Set((ctx()?.codes||[]).map(c=>String(c).toUpperCase())),x=read(RPL_KEY,[]);return new Set((Array.isArray(x)?x:[]).map(c=>String(c).toUpperCase()).filter(c=>!allowed.size||allowed.has(c)))}
+function milosSet(){const c=ctx(),route=routeId(c),allowed=new Set((c?.codes||[]).map(x=>String(x).toUpperCase())),map=read(OBS_KEY,{}),bucket=route&&map&&typeof map[route]==="object"?map[route]:{};return new Set(Object.keys(bucket||{}).map(x=>String(x).toUpperCase()).filter(code=>!allowed.size||allowed.has(code)))}
+function combinedCodeSet(xs=entries()){const out=learnerCodeSet(xs);rplSet().forEach(c=>out.add(c));milosSet().forEach(c=>out.add(c));return out}
+function specialCodeSet(){const out=rplSet();milosSet().forEach(c=>out.add(c));return out}
+async function ensureData(){
+  const c=ctx();if(!c||c.noCourse||!c.dataPrefix)return[];
+  const key=`${c.courseId}|${c.pathway||""}|${c.dataPrefix}`;if(DATA.length&&dataKey===key)return DATA;if(dataPromise&&dataKey===key)return dataPromise;dataKey=key;
+  dataPromise=(async()=>{try{const parts=await Promise.all([1,2,3].map(async n=>{const t=await fetch(`./app/${c.dataPrefix}-${n}.ts?v=${VERSION}`,{cache:"no-store"}).then(r=>{if(!r.ok)throw Error(r.status);return r.text()});const m=t.match(/export const SITE_DATA_\d+:SiteCategory\[\]=(.*);\s*$/s);if(!m)throw Error("data parse");return JSON.parse(m[1])}));DATA=parts.flat();return DATA}catch(e){console.warn("Evia evidence state could not load course map",e);DATA=[];return[]}finally{dataPromise=null}})();return dataPromise
 }
-window.addEventListener("load",start);window.addEventListener("pageshow",patch);window.addEventListener("storage",e=>{if(e.key===STORE)patch()});
-document.addEventListener("click",event=>{if(event.target.closest?.(COUNT_SELECTOR))setTimeout(patch,0)},true);
-if(document.readyState!=="loading")start();
-
-/* Keep the fade transition on ordinary Evia navigation only. TOC, OTJ, ARP and
-   the Targets launcher have their own document-level handlers and must receive
-   the original physical click rather than a replayed synthetic click. */
-const NAV_SELECTOR=[
-  "button[data-cat]","button[data-job]","button[data-opp]","button[data-mode]","button[data-tab]","button[data-code]",
-  "button[data-arch='KSB']","button[data-quick]","button[data-evia]",".option-row",".self-back",".self-evidence",
-  ".evia-target-row",".evia-target-history-row","[data-view]","[data-nav]","[data-route]",
-  "[data-action='back']","[data-action='next']","[data-action='save']","[data-action='submit']","[data-action='finish']",
-  "[data-action='home']","[data-action='evidence']","[data-action='coverage']"
-].join(",");
-const SURFACE_SELECTOR=".self-panel,.view-panel,.selfobs-view,.evia-tools-screen,.evia-sign-card,.selfobs-help-card,.evia-target-layer,.evia-rpl-layer";
-let replaying=false,transitioning=false;
+function findCat(id){return DATA.find(c=>String(c.id)===String(id))}
+function findJob(id){for(const c of DATA){const j=(c.jobs||[]).find(x=>String(x.id)===String(id));if(j)return j}return null}
+function findOpp(id){for(const c of DATA)for(const j of c.jobs||[]){const o=(j.opps||[]).find(x=>String(x.id)===String(id));if(o)return o}return null}
+function oppComplete(o,learnerOpp,special){if(!o)return false;if(learnerOpp.has(o.id))return true;const codes=(o.codes||[]).map(c=>String(c).toUpperCase()).filter(Boolean);return !!codes.length&&codes.every(c=>special.has(c))}
+function jobComplete(j,learnerOpp,special){const opps=(j?.opps||[]).filter(o=>(o.codes||[]).length);return !!opps.length&&opps.every(o=>oppComplete(o,learnerOpp,special))}
+function catComplete(c,learnerOpp,special){const jobs=(c?.jobs||[]).filter(j=>(j.opps||[]).some(o=>(o.codes||[]).length));return !!jobs.length&&jobs.every(j=>jobComplete(j,learnerOpp,special))}
+function side(btn){return btn?.querySelector?.(".self-side")||null}
+function directYellow(btn){const s=side(btn);if(!s)return null;return [...s.children].find(el=>el.tagName==="B")||null}
+function setYellow(btn,on,label,kind){const s=side(btn);if(!s)return;let b=directYellow(btn);if(!on){b?.remove();return}if(!b){b=document.createElement("b");const arrow=s.querySelector(":scope > i");if(arrow)s.insertBefore(b,arrow);else s.appendChild(b)}b.textContent="✓";b.className=`evia-evidence-check ${kind||""}`.trim();b.title=label;b.setAttribute("aria-label",label);b.setAttribute("role","img")}
+function sourceContainer(btn,cls){const s=side(btn);if(!s)return null;let box=s.querySelector(`:scope > .${cls}`);if(!box){box=document.createElement("span");box.className=cls;const arrow=s.querySelector(":scope > i");if(arrow)s.insertBefore(box,arrow);else s.appendChild(box)}return box}
+function setSourceTicks(btn,cls,type,codes){let box=side(btn)?.querySelector?.(`:scope > .${cls}`)||null;if(!codes.length){box?.remove();return}box=box||sourceContainer(btn,cls);if(!box)return;const sig=codes.join("|");if(box.dataset.codes===sig&&box.querySelectorAll(".evia-source-tick-v105").length===codes.length)return;box.dataset.codes=sig;box.replaceChildren(...codes.map(code=>{const t=document.createElement("span");t.className=`evia-source-tick-v105 ${type}`;t.textContent="✓";t.title=type==="rpl"?`RPL: ${code}`:`Milos observation: ${code}`;t.setAttribute("aria-label",t.title);t.setAttribute("role","img");return t}))}
+function setKsbYellow(btn,on){let span=[...btn.children].find(x=>x.tagName==="SPAN"&&!x.classList.contains("evia-rpl-o")&&!x.classList.contains("evia-milos-arch-marker")&&!x.classList.contains("evia-milos-observed-marker"));if(!span&&on){span=document.createElement("span");btn.appendChild(span)}if(!span)return;if(on){span.textContent="✓";span.classList.add("evia-evidence-check");span.title="Learner evidence recorded";span.setAttribute("aria-label","Learner evidence recorded")}else{span.textContent="";span.classList.remove("evia-evidence-check");span.removeAttribute("title");span.removeAttribute("aria-label")}}
+function setGroupYellow(card,on){const em=card.querySelector("strong em");if(!em)return;if(on){em.textContent="✓";em.classList.add("evia-evidence-check");em.title="Evidence recorded"}else{em.textContent="";em.classList.remove("evia-evidence-check");em.removeAttribute("title")}}
+function setArchCoverage(covered){const c=ctx(),codes=(c?.codes||[]).map(x=>String(x).toUpperCase());if(!codes.length)return;const n=codes.filter(code=>covered.has(code)).length,pct=Math.round(n/codes.length*100),arch=document.querySelector('[data-arch="KSB"],[data-arch="AC"]');if(arch){const path=arch.querySelector(".arch-value"),num=arch.querySelector(".arch-number");if(path){path.setAttribute("stroke-dasharray",`${pct} 100`);path.style.strokeDasharray=`${pct} 100`}if(num)num.textContent=`${pct}%`}const mini=[...document.querySelectorAll(".self-mini button")].find(b=>/course coverage/i.test(b.textContent||"")),text=mini?.querySelector("span");if(text)text.textContent=`${n} of ${codes.length} evidenced`}
+function patchCopy(){document.querySelectorAll(".self-copy,.evia-nvq-note").forEach(el=>{const t=el.textContent||"",next=t.replace("Yellow marks only show how many times you have evidenced each KSB.","A yellow tick on a folder means every area inside it is covered.").replace("Yellow marks show evidence frequency.","Yellow ticks show learner evidence.").replace("Purple o marks show RPL.","Purple ticks show RPL.").replace("Blue o marks show assessor-observed coverage.","Blue ticks show assessor-observed coverage.").replace("Yellow o = evidence.","Yellow tick = learner evidence.");if(next!==t)el.textContent=next})}
+async function patch(){
+  queued=false;await ensureData();const xs=entries(),learnerOpp=learnerOppSet(xs),learnerCodes=learnerCodeSet(xs),rpl=rplSet(),milos=milosSet(),special=specialCodeSet(),covered=combinedCodeSet(xs);
+  document.querySelectorAll("button[data-cat]").forEach(btn=>{const c=findCat(btn.dataset.cat),on=catComplete(c,learnerOpp,special);setYellow(btn,on,on?"Every area in this folder is covered":"","evia-folder-complete-v105")});
+  document.querySelectorAll("button[data-job]").forEach(btn=>{const j=findJob(btn.dataset.job),on=jobComplete(j,learnerOpp,special);setYellow(btn,on,on?"Every area in this folder is covered":"","evia-folder-complete-v105")});
+  document.querySelectorAll("button[data-opp]").forEach(btn=>{const o=findOpp(btn.dataset.opp),learner=learnerOpp.has(btn.dataset.opp),codes=(o?.codes||[]).map(c=>String(c).toUpperCase());setYellow(btn,learner,"Learner evidence recorded","evia-learner-source-v105");setSourceTicks(btn,"evia-rpl-evidence-marks","rpl",codes.filter(c=>rpl.has(c)));setSourceTicks(btn,"evia-milos-evidence-marks","milos",codes.filter(c=>milos.has(c)))});
+  document.querySelectorAll(".self-ksbs button[data-code]").forEach(btn=>setKsbYellow(btn,learnerCodes.has(String(btn.dataset.code).toUpperCase())));document.querySelectorAll(".self-card.group").forEach(card=>setGroupYellow(card,!!card.querySelector(".self-entry")));setArchCoverage(covered);patchCopy()
+}
+function queue(){if(queued)return;queued=true;requestAnimationFrame(()=>patch())}
+const WATCH="button[data-cat],button[data-job],button[data-opp],.self-ksbs button[data-code],.self-card.group,.self-entry,.self-mini,[data-arch='KSB'],[data-arch='AC'],.evia-nvq-note,.self-copy";
+function relevant(records){return records.some(r=>[...r.addedNodes].some(n=>n.nodeType===1&&(n.matches?.(WATCH)||n.querySelector?.(WATCH))))}
+function hookStorage(){if(window.__eviaEvidenceStateStorageV105)return;window.__eviaEvidenceStateStorageV105=true;const native=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){const out=native.call(this,key,value);if(this===localStorage&&[STORE,RPL_KEY,OBS_KEY].includes(String(key)))queue();return out}}
+function start(){hookStorage();queue();const root=document.getElementById("root")||document.body;if(root&&!root.__eviaEvidenceStateV105){root.__eviaEvidenceStateV105=true;new MutationObserver(records=>{if(relevant(records))queue()}).observe(root,{subtree:true,childList:true})}}
+window.addEventListener("load",start);window.addEventListener("pageshow",queue);window.addEventListener("storage",e=>{if([STORE,RPL_KEY,OBS_KEY].includes(e.key))queue()});window.addEventListener("evia:milos-observed-changed",queue);document.addEventListener("click",()=>setTimeout(queue,0),true);if(document.readyState!=="loading")start();else document.addEventListener("DOMContentLoaded",start,{once:true});
+const style=document.createElement("style");style.id="evia-evidence-state-v105-style";style.textContent=`.evia-rpl-evidence-marks,.evia-milos-evidence-marks{display:inline-flex!important;align-items:center!important;justify-content:flex-end!important;gap:.12rem!important;margin:0 .08rem 0 0!important;max-width:none!important}.evia-source-tick-v105{display:inline-grid!important;place-items:center!important;width:.92rem!important;height:.92rem!important;min-width:.92rem!important;min-height:.92rem!important;border-radius:50%!important;color:#fff!important;font:850 .62rem/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI Variable","Segoe UI",sans-serif!important;letter-spacing:0!important;box-shadow:none!important}.evia-source-tick-v105.rpl{background:#7b3fc6!important}.evia-source-tick-v105.milos{background:#367fd0!important}`;document.head.appendChild(style);
+window.EviaEvidenceStateV105=Object.freeze({version:VERSION,refresh:queue,covered:()=>[...combinedCodeSet()],rpl:()=>[...rplSet()],milos:()=>[...milosSet()]});
+const NAV_SELECTOR=["button[data-cat]","button[data-job]","button[data-opp]","button[data-mode]","button[data-tab]","button[data-code]","button[data-arch='KSB']","button[data-quick]","button[data-evia]",".option-row",".self-back",".self-evidence",".evia-target-row",".evia-target-history-row","[data-view]","[data-nav]","[data-route]","[data-action='back']","[data-action='next']","[data-action='save']","[data-action='submit']","[data-action='finish']","[data-action='home']","[data-action='evidence']","[data-action='coverage']"].join(",");
+const SURFACE_SELECTOR=".self-panel,.view-panel,.selfobs-view,.evia-tools-screen,.evia-sign-card,.selfobs-help-card,.evia-target-layer,.evia-rpl-layer";let replaying=false,transitioning=false;
 function reducedMotion(){return !!(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches||document.querySelector(".is-reduced-motion"))}
-function surfaceFor(control){return control.closest?.(SURFACE_SELECTOR)||document.querySelector(SURFACE_SELECTOR)}
-function fallbackSurface(){return document.querySelector(SURFACE_SELECTOR)}
-document.addEventListener("click",event=>{
-  if(replaying||transitioning||reducedMotion()||event.defaultPrevented)return;
-  const control=event.target instanceof Element?event.target.closest(NAV_SELECTOR):null;if(!control||control.disabled||control.getAttribute?.("aria-disabled")==="true")return;
-  if(control.matches?.("[data-evia-native-photo],[data-evia-native-video],[data-evia-native-gallery],[data-pick],[data-action='record'],[data-action='stop'],[data-action='download'],[data-install-update],[data-later]"))return;
-  const surface=surfaceFor(control);if(!surface)return;
-  event.preventDefault();event.stopImmediatePropagation();transitioning=true;surface.classList.remove("evia-nav-enter");surface.classList.add("evia-nav-leave");
-  window.setTimeout(()=>{replaying=true;try{control.click()}finally{replaying=false}requestAnimationFrame(()=>requestAnimationFrame(()=>{const next=surface.isConnected?surface:fallbackSurface();if(next){next.classList.remove("evia-nav-leave");next.classList.remove("evia-nav-enter");void next.offsetWidth;next.classList.add("evia-nav-enter")}transitioning=false}))},125)
-},true);
+function surfaceFor(control){return control.closest?.(SURFACE_SELECTOR)||document.querySelector(SURFACE_SELECTOR)}function fallbackSurface(){return document.querySelector(SURFACE_SELECTOR)}
+document.addEventListener("click",event=>{if(replaying||transitioning||reducedMotion()||event.defaultPrevented)return;const control=event.target instanceof Element?event.target.closest(NAV_SELECTOR):null;if(!control||control.disabled||control.getAttribute?.("aria-disabled")==="true")return;if(control.matches?.("[data-evia-native-photo],[data-evia-native-video],[data-evia-native-gallery],[data-pick],[data-action='record'],[data-action='stop'],[data-action='download'],[data-install-update],[data-later]"))return;const surface=surfaceFor(control);if(!surface)return;event.preventDefault();event.stopImmediatePropagation();transitioning=true;surface.classList.remove("evia-nav-enter");surface.classList.add("evia-nav-leave");window.setTimeout(()=>{replaying=true;try{control.click()}finally{replaying=false}requestAnimationFrame(()=>requestAnimationFrame(()=>{const next=surface.isConnected?surface:fallbackSurface();if(next){next.classList.remove("evia-nav-leave");next.classList.remove("evia-nav-enter");void next.offsetWidth;next.classList.add("evia-nav-enter")}transitioning=false}))},125)},true);
 })();
