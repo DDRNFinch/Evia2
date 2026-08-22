@@ -1,19 +1,17 @@
 {
-  "version": "107",
-  "title": "Unified QR exchange and evidence key",
+  "version": "108",
+  "title": "A more alive Evia",
   "details": [
-    "Course coverage now shows only a compact four-colour evidence key with no explanatory paragraph",
-    "Yellow means Learner evidence, purple means Recorded Prior Learning, blue means Assessor Observation and orange means Witness testimony",
-    "Witness testimony is now a full evidence source and contributes to KSB coverage and folder completion",
-    "The assistant launcher now opens only Share QR code and Receive QR code instead of separate Milos, Symi and Tinos pop-ups",
-    "Milos, Symi and Tinos receive the same anonymous Evia course/progress QR while their return QR information can differ by purpose"
+    "Evia now has subtle idle movement, natural eye glances, blinking and occasional head tilts",
+    "Evia reacts when you tap her and gives a small happy expression after successful evidence actions",
+    "Future app updates now appear as a clear notification on the Evia home screen with a direct Update Evia action",
+    "The home update notification stays out of the way while menus and QR screens are open"
   ],
-  "summary": "Evia now has one simple QR exchange and four clearly keyed evidence sources.",
+  "summary": "Evia feels more alive and new versions are now surfaced directly on the home screen.",
   "changes": [
-    "Added the four-colour Course coverage key",
-    "Added orange Witness testimony ticks and coverage handling",
-    "Prepared Tinos witness-testimony return QR handling",
-    "Replaced assistant-specific pop-ups with Share QR code and Receive QR code",
-    "Refreshed the installed-app cache to v107"
+    "Added low-key avatar life animations and reactions",
+    "Added a home-screen new-version notification",
+    "Kept reduced-motion support for accessibility",
+    "Refreshed the complete offline shell to v108"
   ]
 }
