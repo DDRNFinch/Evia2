@@ -1,20 +1,18 @@
 {
-  "version": "113",
-  "title": "A more alive Evia and one learner profile",
+  "version": "114",
+  "title": "Clearer profile button and refined Evia motion",
   "details": [
-    "Evia now looks around evenly instead of favouring the lower-left of the screen",
-    "Her idle animation now includes a soft pulse, rolling glow, tiny hops, pop and dim reactions, and small rolls",
-    "After 10 seconds without interaction Evia gently falls asleep and wakes with a small brighten and pop on the next touch",
-    "The learner name on the home screen is now the single profile editor for name, course, dates, working pattern and online portfolio address",
-    "The duplicate Edit course details route has been removed after setup"
+    "The learner name now looks like a clear tappable profile button on the home screen",
+    "The Evia wordmark is slightly larger and the i is highlighted in yellow",
+    "The 10-second sleep animation has been removed completely",
+    "Evia keeps her balanced eye movement, natural blinks, soft pulse, rolling glow, tiny hop, pop, dim and roll animations"
   ],
-  "summary": "Evia feels more alive while learner details now have one clear home.",
+  "summary": "The home header is clearer and Evia stays gently animated without falling asleep.",
   "changes": [
-    "Balanced Evia's eye movement",
-    "Added pulse, rolling glow, hop, pop, dim and sleep/wake animations",
-    "Unified learner profile under the home learner name",
-    "Added working hours and working days to learner profile",
-    "Removed the duplicate course-details editor",
-    "Refreshed the offline shell to v113"
+    "Made the learner name visibly clickable",
+    "Enlarged the Evia wordmark and coloured the i yellow",
+    "Removed sleep mode",
+    "Kept the subtle living avatar animations",
+    "Refreshed the offline shell to v114"
   ]
 }
