@@ -1,4 +1,4 @@
-// Evia v110 restores the compact Targets control and simplifies the course identity header.
+// Evia v110 profile hotfix: clickable learner name and portfolio website editing.
 const CACHE_NAME = 'evia-shell-v110';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
