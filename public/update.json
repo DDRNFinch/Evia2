@@ -1,10 +1,16 @@
 {
-  "version": "103",
-  "title": "Clear evidence ticks",
+  "version": "104",
+  "title": "Evidence tick marker fixed",
   "details": [
     "Yellow evidence markers now use a filled yellow circle with a dark tick instead of the letter o",
     "Evidence status is immediately recognisable and no longer looks like a zero",
     "The same evidence tick is used consistently in KSB and NVQ AC coverage views",
-    "Installed copies receive a fresh v103 cache so the new status marker replaces the older one"
+    "Installed copies receive a fresh v104 cache so the corrected native marker is loaded"
+  ],
+  "summary": "Evidence status now renders as a clear yellow tick directly from Evia instead of the old o/zero-style marker.",
+  "changes": [
+    "Replaced the legacy o and o x count marker at its source with one clear yellow tick when evidence exists",
+    "Applied the same evidence tick to KSB and NVQ evidence coverage while keeping RPL and Milos observation markers unchanged",
+    "Refreshed the installed-app cache so v104 loads the corrected native evidence marker instead of the cached o marker"
   ]
 }
