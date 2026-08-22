@@ -2,8 +2,8 @@
 "use strict";
 const STORE="evia-selfobs-live-v3";let queued=false;
 function readEntries(){try{const x=JSON.parse(localStorage.getItem(STORE)||"[]");return Array.isArray(x)?x:[]}catch{return[]}}
-function mark(n){n=Math.max(0,Math.round(Number(n)||0));if(!n)return"";return n>5?`o x ${n}`:"o".repeat(n)}
-function setText(el,n){if(!el)return;const text=mark(n);if(el.textContent!==text)el.textContent=text}
+function mark(n){n=Math.max(0,Math.round(Number(n)||0));return n?"✓":""}
+function setText(el,n){if(!el)return;const text=mark(n);if(el.textContent!==text)el.textContent=text;el.classList.toggle("evia-evidence-check",!!n);if(n){el.setAttribute("title","Evidence recorded");el.setAttribute("aria-label",`${n} evidence item${n===1?"":"s"} recorded`)}else{el.removeAttribute("title");el.removeAttribute("aria-label")}}
 function count(entries,field,id){return entries.reduce((n,e)=>n+(e?.[field]===id?1:0),0)}
 function patch(){
   queued=false;const entries=readEntries();
