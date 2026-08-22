@@ -1,5 +1,5 @@
-// Evia v106 refines evidence-source markers and fixed KSB marker positions.
-const CACHE_NAME = 'evia-shell-v106';
+// Evia v107 adds the unified QR exchange, coverage key and witness evidence.
+const CACHE_NAME = 'evia-shell-v107';
 const CACHE_PREFIXES = ['evia-shell-', 'evia-beta-shell-'];
 const CRITICAL = [
   './',
@@ -15,6 +15,8 @@ const CRITICAL = [
   './assets/evia-updater.js',
   './assets/evia-version-v105.js',
   './assets/evia-mini-milos-v86.js',
+  './assets/evia-qr-exchange-v107.js',
+  './assets/evia-assistant-network.js',
   './assets/evia-next-visit-v95.js',
   './assets/evia-milos-review-sync-v97.js',
   './assets/evia-targets.js',
